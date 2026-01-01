@@ -27,7 +27,7 @@ export default function Schedule() {
           <div key={index} className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
             <div className="bg-primary/10 p-4 border-b border-primary/10 flex items-center justify-center gap-2">
               <Calendar className="w-5 h-5 text-primary" />
-              <h3 className="text-xl font-semibold text-primary-foreground/80 dark:text-primary">{day.date}</h3>
+              <h3 className="text-xl font-semibold text-black dark:text-primary">{day.date}</h3>
             </div>
             <div className="p-6 space-y-6">
               {day.items.map((item, i) => (
