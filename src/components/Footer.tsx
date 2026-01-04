@@ -1,5 +1,7 @@
 'use client'
 
+import { EVENT_DETAILS } from "@/data/event";
+
 export const Footer = () => {
   const addToCalendar = () => {
     alert("Event saved to calendar!");
@@ -18,7 +20,7 @@ export const Footer = () => {
       <div className="text-center pt-8 border-t border-[#e5e1dc] w-full">
         <span className="material-symbols-outlined text-primary mb-2 text-3xl">local_florist</span>
         <p className="text-lg font-medium text-[#181511] font-thai">ขออนุโมทนาบุญกับทุกท่าน</p>
-        <p className="text-sm text-gray-400 mt-2 font-thai">© 2569 งานอุปสมบท นายณัฐวุฒิ สุนทรโรจน์</p>
+        <p className="text-sm text-gray-400 mt-2 font-thai">© 2569 งานอุปสมบท {EVENT_DETAILS.hostName}</p>
       </div>
     </div>
   );

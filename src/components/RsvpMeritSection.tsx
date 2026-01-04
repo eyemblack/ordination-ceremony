@@ -1,4 +1,5 @@
 "use client"
+import { EVENT_DETAILS } from '@/data/event';
 import { useState } from 'react';
 
 const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLScnybCZvLvyi0JwNFot4SQ6o28eGQVtQDZaMGcd0hccGlA13w/formResponse";
@@ -205,9 +206,9 @@ const MeritSection = () => {
         </div>
 
         <div className="text-sm text-gray-700 space-y-1">
-          <p className="font-bold font-thai">ธนาคารกสิกรไทย</p>
-          <p className="text-lg font-mono tracking-wider text-[#181511]">123-4-56789-0</p>
-          <p className="font-thai">นายณัฐวุฒิ สุนทรโรจน์</p>
+          <p className="font-bold font-thai">{EVENT_DETAILS.bankAccount.bankName}</p>
+          <p className="text-lg font-mono tracking-wider text-[#181511]">{EVENT_DETAILS.bankAccount.accountNumber}</p>
+          <p className="font-thai">{EVENT_DETAILS.bankAccount.accountName}</p>
         </div>
       </div>
     </section>
