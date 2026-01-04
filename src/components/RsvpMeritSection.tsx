@@ -1,6 +1,7 @@
-'use client'
-import { RadioGroup, RadioGroupItem } from '@radix-ui/react-radio-group';
+"use client"
 import { useState } from 'react';
+
+const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLScnybCZvLvyi0JwNFot4SQ6o28eGQVtQDZaMGcd0hccGlA13w/formResponse";
 
 export const RsvpForm = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ export const RsvpForm = () => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setShowConfirm(false);
     alert(`ขอบคุณที่ตอบรับ: คุณ ${formData.name}`);
     setFormData({
@@ -30,7 +31,26 @@ export const RsvpForm = () => {
       guests: '1',
       attendance: 'yes'
     });
+    const data = new URLSearchParams();
+    data.append('entry.1371482313', formData.name);
+    data.append('entry.214795494', formData.guests);
+    data.append('entry.929721816', formData.attendance);
+
+    try {
+      await fetch(GOOGLE_FORM_ACTION_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: data,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+    } catch (error) {
+      alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
+      console.error('Error submitting form:', error);
+    }
   };
+
 
   return (
     <section className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 flex flex-col h-full relative">
