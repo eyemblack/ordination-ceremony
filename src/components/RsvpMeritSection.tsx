@@ -1,38 +1,77 @@
 "use client"
-import { EVENT_DETAILS } from '@/data/event';
 import { useState } from 'react';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { CheckCircle2 } from "lucide-react"
 
+import { EVENT_DETAILS } from '@/data/event';
 import { GOOGLE_FORM_CONFIG } from '@/data/constants';
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+
+const formSchema = z.object({
+  name: z.string().min(1, {
+    message: "กรุณาระบุชื่อ-นามสกุล",
+  }),
+  guests: z.string(),
+  attendance: z.enum(["yes", "no"], {
+    message: "กรุณาระบุความประสงค์",
+  }),
+})
 
 export const RsvpForm = () => {
-
-  const [formData, setFormData] = useState({
-    name: '',
-    guests: '1',
-    attendance: 'yes'
-  });
   const [showConfirm, setShowConfirm] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      guests: "1",
+      attendance: "yes",
+    },
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData.name.trim()) {
-      setShowConfirm(true);
-    }
-  };
+  // 2. Define a submit handler.
+  function onSubmit() {
+    // Show confirmation modal instead of immediate submission
+    setShowConfirm(true);
+  }
 
   const handleConfirm = async () => {
     setShowConfirm(false);
+    const values = form.getValues();
 
     const data = new URLSearchParams();
-    data.append(GOOGLE_FORM_CONFIG.fields.name, formData.name);
-    data.append(GOOGLE_FORM_CONFIG.fields.guests, formData.guests);
-    data.append(GOOGLE_FORM_CONFIG.fields.attendance, formData.attendance);
+    data.append(GOOGLE_FORM_CONFIG.fields.name, values.name);
+    data.append(GOOGLE_FORM_CONFIG.fields.guests, values.guests);
+    data.append(GOOGLE_FORM_CONFIG.fields.attendance, values.attendance);
 
     try {
       await fetch(GOOGLE_FORM_CONFIG.actionUrl, {
@@ -51,6 +90,7 @@ export const RsvpForm = () => {
     }
   };
 
+  const values = form.watch();
 
   return (
     <section className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 flex flex-col h-full relative">
@@ -62,136 +102,164 @@ export const RsvpForm = () => {
       {isSubmitted ? (
         <div className="flex flex-col items-center justify-center grow py-8 text-center animate-in fade-in duration-500">
           <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4 text-green-600">
-            <span className="material-symbols-outlined text-4xl">check_circle</span>
+            <CheckCircle2 className="w-10 h-10" />
           </div>
           <h3 className="text-xl font-bold text-[#181511] font-thai mb-2">บันทึกข้อมูลสำเร็จ</h3>
           <p className="text-gray-600 font-thai mb-6">
             ขอบคุณที่แจ้งความประสงค์
           </p>
-          <button
+          <Button
+            variant="link"
             onClick={() => {
               setIsSubmitted(false);
-              setFormData({ name: '', guests: '1', attendance: 'yes' });
+              form.reset();
             }}
             className="text-primary hover:text-primary-dark font-bold font-thai text-sm underline underline-offset-4"
           >
             ส่งข้อมูลเพิ่มเติม
-          </button>
+          </Button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 grow">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-bold text-[#181511] font-thai">ชื่อ-นามสกุล</label>
-            <input
-              required
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 grow">
+            <FormField
+              control={form.control}
               name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full rounded-lg border border-[#d6d1cb] px-4 py-2.5 text-[#181511] focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-[#fdfdfc] font-thai"
-              placeholder="ระบุชื่อของท่าน"
-              type="text"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-bold text-[#181511] font-thai">ชื่อ-นามสกุล</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="ระบุชื่อของท่าน"
+                      className="bg-[#fdfdfc] font-thai"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="font-thai" />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้ติดตาม</label>
-            <select
+            <FormField
+              control={form.control}
               name="guests"
-              value={formData.guests}
-              onChange={handleChange}
-              className="w-full rounded-lg border border-[#d6d1cb] px-4 py-2.5 text-[#181511] focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-[#fdfdfc] font-thai"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้ติดตาม</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="bg-[#fdfdfc] font-thai">
+                        <SelectValue placeholder="เลือกจำนวน" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="font-thai">
+                      <SelectItem value="1">1 ท่าน</SelectItem>
+                      <SelectItem value="2">2 ท่าน</SelectItem>
+                      <SelectItem value="3">3 ท่าน</SelectItem>
+                      <SelectItem value="4">4 ท่าน</SelectItem>
+                      <SelectItem value="5">5 ท่าน</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="font-thai" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="attendance"
+              render={({ field }) => (
+                <FormItem className="space-y-3 py-2">
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0 cursor-pointer group">
+                        <FormControl>
+                          <RadioGroupItem value="yes" className="text-primary border-gray-300 focus:ring-primary" />
+                        </FormControl>
+                        <FormLabel className="font-normal text-[#181511] group-hover:text-primary transition-colors font-thai cursor-pointer">
+                          สามารถมาร่วมงานได้
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 cursor-pointer group">
+                        <FormControl>
+                          <RadioGroupItem value="no" className="text-gray-400 border-gray-300 focus:ring-gray-400" />
+                        </FormControl>
+                        <FormLabel className="font-normal text-gray-500 group-hover:text-gray-700 transition-colors font-thai cursor-pointer">
+                          ไม่สะดวกมาร่วมงาน
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage className="font-thai" />
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              className="mt-auto w-full bg-primary hover:bg-primary-dark text-white font-bold h-11 transition-colors shadow-sm font-thai"
             >
-              <option value="1">1 ท่าน</option>
-              <option value="2">2 ท่าน</option>
-              <option value="3">3 ท่าน</option>
-              <option value="4">4 ท่าน</option>
-              <option value="5">5 ท่าน</option>
-            </select>
-          </div>
-
-          <div className="flex flex-col gap-3 py-2">
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="radio"
-                name="attendance"
-                value="yes"
-                checked={formData.attendance === 'yes'}
-                onChange={handleChange}
-                className="w-5 h-5 text-primary border-gray-300 focus:ring-primary cursor-pointer accent-primary"
-              />
-              <span className="text-[#181511] group-hover:text-primary transition-colors font-thai">สามารถมาร่วมงานได้</span>
-            </label>
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="radio"
-                name="attendance"
-                value="no"
-                checked={formData.attendance === 'no'}
-                onChange={handleChange}
-                className="w-5 h-5 text-gray-400 border-gray-300 focus:ring-gray-400 cursor-pointer accent-gray-500"
-              />
-              <span className="text-gray-500 group-hover:text-gray-700 transition-colors font-thai">ไม่สะดวกมาร่วมงาน</span>
-            </label>
-          </div>
-
-          <button
-            type="submit"
-            className="mt-auto w-full rounded-lg bg-primary hover:bg-primary-dark text-white font-bold h-11 transition-colors shadow-sm font-thai"
-          >
-            ยืนยัน
-          </button>
-        </form>
+              ยืนยัน
+            </Button>
+          </form>
+        </Form>
       )}
 
       {/* Confirmation Modal */}
-      {showConfirm && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="bg-primary/10 p-4 border-b border-primary/10 flex items-center gap-3">
+      <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
+        <DialogContent className="sm:max-w-sm rounded-xl font-thai">
+          <DialogHeader>
+            <div className="flex items-center gap-2 mb-2">
               <span className="material-symbols-outlined text-primary text-2xl">help</span>
-              <h3 className="text-lg font-bold text-[#181511] font-thai">ยืนยันข้อมูล</h3>
+              <DialogTitle className="text-lg font-bold text-[#181511]">ยืนยันข้อมูล</DialogTitle>
             </div>
+            <DialogDescription>
+              โปรดตรวจสอบข้อมูลของท่านก่อนยืนยัน
+            </DialogDescription>
+          </DialogHeader>
 
-            <div className="p-6 flex flex-col gap-3">
-              <p className="text-gray-600 font-thai text-sm">โปรดตรวจสอบข้อมูลของท่านก่อนยืนยัน</p>
-              <div className="bg-[#f8f7f6] p-4 rounded-lg border border-[#e5e1dc] space-y-2 text-sm">
-                <div className="flex justify-between items-start gap-2">
-                  <span className="text-gray-500 font-thai shrink-0">ชื่อ-นามสกุล:</span>
-                  <span className="font-bold text-[#181511] font-thai text-right">{formData.name}</span>
-                </div>
-                <div className="flex justify-between items-start gap-2">
-                  <span className="text-gray-500 font-thai shrink-0">จำนวน:</span>
-                  <span className="font-bold text-[#181511] font-thai text-right">
-                    {formData.guests === '1' ? 'มาคนเดียว' : `${formData.guests} ท่าน`}
-                  </span>
-                </div>
-                <div className="flex justify-between items-start gap-2">
-                  <span className="text-gray-500 font-thai shrink-0">สถานะ:</span>
-                  <span className={`font-bold font-thai text-right ${formData.attendance === 'yes' ? 'text-green-600' : 'text-red-500'}`}>
-                    {formData.attendance === 'yes' ? 'มาร่วมงานได้' : 'ไม่สะดวก'}
-                  </span>
-                </div>
-              </div>
+          <div className="bg-[#f8f7f6] p-4 rounded-lg border border-[#e5e1dc] space-y-2 text-sm">
+            <div className="flex justify-between items-start gap-2">
+              <span className="text-gray-500 shrink-0">ชื่อ-นามสกุล:</span>
+              <span className="font-bold text-[#181511] text-right">{values.name}</span>
             </div>
-
-            <div className="p-4 bg-gray-50 flex gap-3 justify-end border-t border-gray-100">
-              <button
-                type="button"
-                onClick={() => setShowConfirm(false)}
-                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-bold hover:bg-gray-100 transition-colors font-thai text-sm"
-              >
-                ยกเลิก
-              </button>
-              <button
-                onClick={handleConfirm}
-                className="px-6 py-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold shadow-sm transition-colors font-thai text-sm"
-              >
-                ยืนยัน
-              </button>
+            <div className="flex justify-between items-start gap-2">
+              <span className="text-gray-500 shrink-0">จำนวน:</span>
+              <span className="font-bold text-[#181511] text-right">
+                {values.guests === '1' ? 'มาคนเดียว' : `${values.guests} ท่าน`}
+              </span>
+            </div>
+            <div className="flex justify-between items-start gap-2">
+              <span className="text-gray-500 shrink-0">สถานะ:</span>
+              <span className={`font-bold text-right ${values.attendance === 'yes' ? 'text-green-600' : 'text-red-500'}`}>
+                {values.attendance === 'yes' ? 'มาร่วมงานได้' : 'ไม่สะดวก'}
+              </span>
             </div>
           </div>
-        </div>
-      )}
+
+          <DialogFooter className="flex gap-2 sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowConfirm(false)}
+              className="font-bold text-gray-700 font-thai"
+            >
+              ยกเลิก
+            </Button>
+            <Button
+              type="button"
+              onClick={handleConfirm}
+              className="bg-primary hover:bg-primary-dark text-white font-bold font-thai"
+            >
+              ยืนยัน
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
