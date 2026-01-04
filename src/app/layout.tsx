@@ -19,7 +19,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "พิธีอุปสมบท นายณัฐวุฒิ สุนทรโรจน์",
+  title: "งานอุปสมบท",
   description: "ขอเรียนเชิญร่วมงานอุปสมบท วันเสาร์ที่ 17 มกราคม 2569 ณ วัดบางโฉลงใน",
 };
 
