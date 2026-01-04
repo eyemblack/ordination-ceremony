@@ -1,5 +1,6 @@
 'use client'
-import React, { useState } from 'react';
+import { RadioGroup, RadioGroupItem } from '@radix-ui/react-radio-group';
+import { useState } from 'react';
 
 export const RsvpForm = () => {
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ export const RsvpForm = () => {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 grow">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-bold text-[#181511] font-thai">ชื่อ-นามสกุล (Name)</label>
+          <label className="text-sm font-bold text-[#181511] font-thai">ชื่อ-นามสกุล</label>
           <input
             required
             name="name"
@@ -53,18 +54,18 @@ export const RsvpForm = () => {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้ติดตาม (Guests)</label>
+          <label className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้ติดตาม</label>
           <select
             name="guests"
             value={formData.guests}
             onChange={handleChange}
             className="w-full rounded-lg border border-[#d6d1cb] px-4 py-2.5 text-[#181511] focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-[#fdfdfc] font-thai"
           >
-            <option value="1">มาคนเดียว</option>
+            <option value="1">1 ท่าน</option>
             <option value="2">2 ท่าน</option>
             <option value="3">3 ท่าน</option>
             <option value="4">4 ท่าน</option>
-            <option value="5">5 ท่านขึ้นไป</option>
+            <option value="5">5 ท่าน</option>
           </select>
         </div>
 
@@ -97,7 +98,7 @@ export const RsvpForm = () => {
           type="submit"
           className="mt-auto w-full rounded-lg bg-primary hover:bg-primary-dark text-white font-bold h-11 transition-colors shadow-sm font-thai"
         >
-          ยืนยัน (Submit)
+          ยืนยัน
         </button>
       </form>
 
@@ -107,7 +108,7 @@ export const RsvpForm = () => {
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="bg-primary/10 p-4 border-b border-primary/10 flex items-center gap-3">
               <span className="material-symbols-outlined text-primary text-2xl">help</span>
-              <h3 className="text-lg font-bold text-[#181511] font-thai">ยืนยันข้อมูล (Confirm)</h3>
+              <h3 className="text-lg font-bold text-[#181511] font-thai">ยืนยันข้อมูล</h3>
             </div>
 
             <div className="p-6 flex flex-col gap-3">
@@ -138,13 +139,13 @@ export const RsvpForm = () => {
                 onClick={() => setShowConfirm(false)}
                 className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-bold hover:bg-gray-100 transition-colors font-thai text-sm"
               >
-                แก้ไข (Edit)
+                ยกเลิก
               </button>
               <button
                 onClick={handleConfirm}
                 className="px-6 py-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold shadow-sm transition-colors font-thai text-sm"
               >
-                ยืนยัน (Confirm)
+                ยืนยัน
               </button>
             </div>
           </div>
@@ -154,7 +155,7 @@ export const RsvpForm = () => {
   );
 };
 
-const MeritSection: React.FC = () => {
+const MeritSection = () => {
   return (
     <section className="bg-[#fffcf7] rounded-xl shadow-sm border border-primary/30 p-6 flex flex-col h-full text-center relative overflow-hidden">
       {/* Decorative corner */}

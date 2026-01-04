@@ -1,16 +1,13 @@
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Location } from "@/components/Location";
-import { Navbar } from "@/components/Navbar";
 import { Quote } from "@/components/Quote";
 import { RsvpMeritSection } from "@/components/RsvpMeritSection";
 import { Schedule } from "@/components/Schedule";
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden font-sans">
-      <Navbar />
-
+    <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden font-sans bg-thai-pattern ">
       <main className="layout-container flex flex-col items-center w-full grow">
         <Hero />
 

@@ -29,10 +29,10 @@ export default function RootLayout({
   return (
     <html lang="th" className="light">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=optional" />
       </head>
       <body
-        className={`${newsreader.variable} ${notoSansThai.variable} antialiased bg-background-light text-[#181511] bg-thai-pattern font-sans`}
+        className={`${newsreader.variable} ${notoSansThai.variable} antialiased font-sans`}
       >
         {children}
       </body>

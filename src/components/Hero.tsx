@@ -9,8 +9,8 @@ export const Hero = () => {
   };
 
   return (
-    <div className="w-full max-w-[960px] p-4 md:p-8">
-      <div className="relative flex flex-col items-center justify-center min-h-[500px] w-full overflow-hidden rounded-xl shadow-lg group">
+    <div className="w-full max-w-[960px] p-0 md:p-8">
+      <div className="relative flex flex-col items-center justify-center min-h-[500px] w-full overflow-hidden rounded-none md:rounded-xl shadow-lg group">
         {/* Background Image with Overlay */}
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"

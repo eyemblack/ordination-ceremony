@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {
   --color-background: var(--background);
@@ -25,7 +26,6 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
-  --color-ring: var(--ring);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -42,12 +42,12 @@
   /* Modern Thai Elegant Theme */
 
   /* Cream Base */
-  --background: #FDFBF7;
+  --background: #f8f7f6;
   --foreground: #3E3E3E;
   /* Soft Dark Gray/Brown for text */
 
   /* Gold */
-  --primary: #D4AF37;
+  --primary: #e69237;
   --primary-foreground: #FFFFFF;
 
   /* Saffron Orange (Accents) */
@@ -73,7 +73,6 @@
 
   --border: #E8E1D1;
   --input: #E8E1D1;
-  --ring: #D4AF37;
 }
 
 .dark {
@@ -104,15 +103,32 @@
 
   --border: #57534E;
   --input: #57534E;
-  --ring: #D4AF37;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
+  .bg-thai-pattern {
+    /* กำหนดให้ภาพซ้ำกันเป็น Pattern */
+    background-repeat: repeat;
+    /* ใส่ URL ของ SVG (ใช้ Double Quotes " ครอบข้างนอก เพราะข้างในเป็น Single Quotes ') */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e69237' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  vertical-align: middle;
 }

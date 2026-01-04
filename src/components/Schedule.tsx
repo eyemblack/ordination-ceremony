@@ -9,7 +9,7 @@ interface ScheduleItemProps {
 export const ScheduleItem = ({ time, title, description, icon, isLast }: ScheduleItemProps) => (
   <>
     <div className="flex flex-col items-center">
-      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary mb-2">
+      <div className="flex items-center justify-center size-10 min-h-10 rounded-full bg-primary/10 text-primary">
         <span className="material-symbols-outlined text-[20px]">{icon}</span>
       </div>
       {!isLast && <div className="w-[2px] bg-[#e5e1dc] h-full min-h-[40px]"></div>}
@@ -27,7 +27,7 @@ export const Schedule = () => {
     <section id="schedule" className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 md:p-8 mb-8">
       <div className="flex items-center gap-3 mb-8 border-b border-[#f0ebe6] pb-4">
         <span className="material-symbols-outlined text-primary text-2xl">schedule</span>
-        <h2 className="text-[#181511] text-2xl font-bold font-thai">กำหนดการ (Schedule)</h2>
+        <h2 className="text-[#181511] text-2xl font-bold font-thai">กำหนดการ</h2>
       </div>
 
       <div className="grid grid-cols-[48px_1fr] gap-x-4">
