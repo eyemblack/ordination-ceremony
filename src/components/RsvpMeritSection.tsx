@@ -48,7 +48,6 @@ export const RsvpForm = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,9 +57,7 @@ export const RsvpForm = () => {
     },
   })
 
-  // 2. Define a submit handler.
   function onSubmit() {
-    // Show confirmation modal instead of immediate submission
     setShowConfirm(true);
   }
 
@@ -90,7 +87,7 @@ export const RsvpForm = () => {
     }
   };
 
-  const values = form.watch();
+  const { watch } = form;
 
   return (
     <section className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 flex flex-col h-full relative">
@@ -225,18 +222,18 @@ export const RsvpForm = () => {
           <div className="bg-[#f8f7f6] p-4 rounded-lg border border-[#e5e1dc] space-y-2 text-sm">
             <div className="flex justify-between items-start gap-2">
               <span className="text-gray-500 shrink-0">ชื่อ-นามสกุล:</span>
-              <span className="font-bold text-[#181511] text-right">{values.name}</span>
+              <span className="font-bold text-[#181511] text-right">{watch('name')}</span>
             </div>
             <div className="flex justify-between items-start gap-2">
               <span className="text-gray-500 shrink-0">จำนวน:</span>
               <span className="font-bold text-[#181511] text-right">
-                {values.guests === '1' ? 'มาคนเดียว' : `${values.guests} ท่าน`}
+                {watch('guests') === '1' ? 'มาคนเดียว' : `${watch('guests')} ท่าน`}
               </span>
             </div>
             <div className="flex justify-between items-start gap-2">
               <span className="text-gray-500 shrink-0">สถานะ:</span>
-              <span className={`font-bold text-right ${values.attendance === 'yes' ? 'text-green-600' : 'text-red-500'}`}>
-                {values.attendance === 'yes' ? 'มาร่วมงานได้' : 'ไม่สะดวก'}
+              <span className={`font-bold text-right ${watch('attendance') === 'yes' ? 'text-green-600' : 'text-red-500'}`}>
+                {watch('attendance') === 'yes' ? 'มาร่วมงานได้' : 'ไม่สะดวก'}
               </span>
             </div>
           </div>
