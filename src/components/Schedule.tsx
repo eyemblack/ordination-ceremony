@@ -1,3 +1,5 @@
+import { EVENT_DETAILS } from "@/data/event";
+
 interface ScheduleItemProps {
   time: string;
   title: string;
@@ -22,6 +24,27 @@ export const ScheduleItem = ({ time, title, description, icon, isLast }: Schedul
   </>
 );
 
+const scheduleItems = [
+  {
+    time: EVENT_DETAILS.schedule.ceremony,
+    title: "นำนาคเข้าอุปสมบท",
+    description: "ณ พัทธสีมา วัดบางโฉลงใน",
+    icon: "self_improvement",
+  },
+  {
+    time: EVENT_DETAILS.schedule.lunch,
+    title: "ถวายภัตตาหารเพลแด่พระภิกษุสงฆ์",
+    description: "ร่วมถวายภัตตาหารและจตุปัจจัย",
+    icon: "rice_bowl",
+  },
+  {
+    time: EVENT_DETAILS.schedule.reception,
+    title: "เชิญแขกรับประทานอาหาร",
+    description: "ร่วมรับประทานอาหารโต๊ะจีน",
+    icon: "restaurant",
+  },
+];
+
 export const Schedule = () => {
   return (
     <section id="schedule" className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 md:p-8 mb-8">
@@ -31,25 +54,16 @@ export const Schedule = () => {
       </div>
 
       <div className="grid grid-cols-[48px_1fr] gap-x-4">
-        <ScheduleItem
-          time="08:00 น."
-          title="นำนาคเข้าอุปสมบท"
-          description="ณ พัทธสีมา วัดบางโฉลงใน"
-          icon="self_improvement"
-        />
-        <ScheduleItem
-          time="11:00 น."
-          title="ถวายภัตตาหารเพลแด่พระภิกษุสงฆ์"
-          description="ร่วมถวายภัตตาหารและจตุปัจจัย"
-          icon="rice_bowl"
-        />
-        <ScheduleItem
-          time="12:00 น."
-          title="เชิญแขกรับประทานอาหาร"
-          description="ร่วมรับประทานอาหารโต๊ะจีน"
-          icon="restaurant"
-          isLast={true}
-        />
+        {scheduleItems.map((item, index) => (
+          <ScheduleItem
+            key={index}
+            time={item.time}
+            title={item.title}
+            description={item.description}
+            icon={item.icon}
+            isLast={index === scheduleItems.length - 1}
+          />
+        ))}
       </div>
     </section>
   );
