@@ -1,7 +1,9 @@
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+
 export const Quote = () => {
   return (
     <section className="flex flex-col items-center py-12 px-6 text-center">
-      <span className="material-symbols-outlined text-primary/40 text-4xl mb-4">format_quote</span>
+      <FormatQuoteIcon className="material-symbols-outlined text-primary/40 text-4xl mb-4" />
       <p className="text-text-main text-lg md:text-xl font-normal leading-relaxed italic relative font-thai">
         &quot;ขอเรียนเชิญไปร่วมอนุโมทนาในงานอุปสมบทครั้งนี้โดยพร้อมเพียงกัน กรรมใดที่ผู้อุปสมบทได้ล่วงเกินท่านด้วย กายกรรม วจีกรรม มโนกรรม ขอได้โปรดอโหสิกรรม ให้แก่ผู้อุปสมบทด้วยเถิด&quot;
       </p>

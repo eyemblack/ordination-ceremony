@@ -33,6 +33,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 const ATTENDANCE_OPTIONS = {
   YES: "yes",
@@ -177,7 +179,7 @@ export const RsvpForm = () => {
   return (
     <section className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 flex flex-col h-full relative">
       <div className="flex items-center gap-2 mb-6 border-b border-[#f0ebe6] pb-3">
-        <span className="material-symbols-outlined text-primary">mark_email_read</span>
+        <MarkEmailReadIcon className="material-symbols-outlined text-primary" />
         <h2 className="text-[#181511] text-xl font-bold font-thai">ยืนยันการมาร่วมงาน</h2>
       </div>
 
@@ -340,7 +342,7 @@ const MeritSection = () => {
               backgroundRepeat: 'repeat'
             }}
           >
-            <span className="material-symbols-outlined text-gray-400 text-4xl">qr_code_scanner</span>
+            <QrCodeScannerIcon className="material-symbols-outlined text-gray-400 text-4xl" />
           </div>
         </div>
 
