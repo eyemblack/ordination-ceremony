@@ -1,19 +1,24 @@
-import Hero from "@/components/Hero";
-import Invitation from "@/components/Invitation";
-import Schedule from "@/components/Schedule";
-import Location from "@/components/Location";
+import { Footer } from "@/components/Footer";
+import { Hero } from "@/components/Hero";
+import { Location } from "@/components/Location";
+import { Quote } from "@/components/Quote";
+import { RsvpMeritSection } from "@/components/RsvpMeritSection";
+import { Schedule } from "@/components/Schedule";
 
 export default function Home() {
   return (
-    <main className="min-h-screen pb-20 selection:bg-primary/20">
-      <Hero />
-      <Invitation />
-      <Schedule />
-      <Location />
+    <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden font-sans bg-thai-pattern ">
+      <main className="layout-container flex flex-col items-center w-full grow">
+        <Hero />
 
-      <footer className="text-center text-muted-foreground text-sm py-8 mt-12 border-t border-border/50">
-        <p>© 2569 งานบวชนาคแบล็ค | วัดบางโฉลงใน</p>
-      </footer>
-    </main>
+        <div className="flex flex-col w-full max-w-[800px] px-4 md:px-0 pb-4">
+          <Quote />
+          <Schedule />
+          <Location />
+          <RsvpMeritSection />
+          <Footer />
+        </div>
+      </main>
+    </div>
   );
 }

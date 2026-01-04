@@ -1,31 +1,70 @@
-import { Zap } from 'lucide-react'; // Placeholder icon, we might use something more traditional or just text
+"use client";
+import Image from "next/image";
+import { EVENT_DETAILS } from "@/data/event";
 
-export default function Hero() {
+export const Hero = () => {
+  const scrollToSchedule = () => {
+    const el = document.getElementById('schedule');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="relative min-h-[80vh] flex flex-col items-center justify-center text-center p-6 overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 bg-[url('/pattern-gold.svg')] opacity-5 pointer-events-none"></div>
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-[50vh] bg-gradient-to-b from-primary/10 to-transparent blur-3xl rounded-full pointer-events-none"></div>
+    <div className="w-full max-w-[960px] p-0 md:p-8">
+      <div className="relative flex flex-col items-center justify-center min-h-[500px] w-full overflow-hidden rounded-none md:rounded-xl shadow-lg group">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src={EVENT_DETAILS.images.heroBackground}
+            alt="Temple Background"
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            priority
+          />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/40 to-black/70" />
+        </div>
 
-      <div className="z-10 animate-in fade-in zoom-in duration-1000 space-y-6">
-        <p className="text-secondary-foreground/80 text-lg md:text-xl tracking-widest uppercase font-light">
-          ขอเชิญร่วมอนุโมทนาบุญ
-        </p>
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center text-center p-6 gap-6 max-w-2xl">
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-3 rounded-full mb-2 animate-fade-in-up">
+            <span className="material-symbols-outlined text-white text-4xl">temple_buddhist</span>
+          </div>
 
-        <h1 className="text-5xl md:text-7xl font-bold text-primary drop-shadow-sm tracking-tight">
-          นาคแบล็ค
-        </h1>
+          <div className="flex flex-col gap-2 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+            <h2 className="text-[#ffdbaba8] font-medium tracking-widest uppercase text-sm font-thai">
+              {EVENT_DETAILS.invitationText}
+            </h2>
+            <h1 className="text-white text-5xl md:text-6xl font-black leading-tight tracking-tight drop-shadow-md font-thai">
+              {EVENT_DETAILS.eventTitle}
+            </h1>
+          </div>
 
-        <div className="w-24 h-1 bg-primary/30 mx-auto rounded-full my-6"></div>
+          <div
+            className="w-24 h-[2px] bg-primary my-2 animate-fade-in-up"
+            style={{ animationDelay: '300ms' }}
+          />
 
-        <p className="text-xl md:text-2xl text-foreground font-light">
-          พิธีอุปสมบท
-        </p>
+          <div className="flex flex-col gap-1 animate-fade-in-up" style={{ animationDelay: '450ms' }}>
+            <h2 className="text-white text-2xl md:text-3xl font-bold font-thai">
+              {EVENT_DETAILS.hostName}
+            </h2>
+            <p className="text-white/90 text-lg font-medium mt-2 font-thai">
+              {EVENT_DETAILS.date}
+            </p>
+          </div>
 
-        <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-secondary-foreground/70 mt-4">
-          <span className="text-lg">16 - 17 มกราคม 2569</span>
+          <button
+            onClick={scrollToSchedule}
+            className="mt-4 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-[#211911] text-base font-bold px-8 py-3 rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer"
+            style={{ animationDelay: '600ms' }}
+          >
+            <span className="material-symbols-outlined">calendar_month</span>
+            <span className="font-thai">อ่านกำหนดการ</span>
+          </button>
         </div>
       </div>
-    </section>
+    </div>
   );
-}
+};

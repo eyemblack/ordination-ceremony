@@ -1,51 +1,70 @@
-import { Calendar, Clock } from 'lucide-react';
+import { EVENT_DETAILS } from "@/data/event";
 
-export default function Schedule() {
-  const events = [
-    {
-      date: "16 มกราคม 2569",
-      items: [
-        { time: "15:00 - 17:00", activity: "พิธีปลงผมนาค", description: "ณ วัดบางโฉลงใน" }
-      ]
-    },
-    {
-      date: "17 มกราคม 2569",
-      items: [
-        { time: "07:00", activity: "แห่นาคเข้าโบสถ์", description: "" },
-        { time: "08:00", activity: "พิธีอุปสมบท", description: "ณ พัทธสีมา วัดบางโฉลงใน" },
-        { time: "11:00", activity: "ฉลองพระใหม่", description: "และถวายภัตตาหารเพล" }
-      ]
-    }
-  ];
+interface ScheduleItemProps {
+  time: string;
+  title: string;
+  description: string;
+  icon: string;
+  isLast?: boolean;
+}
 
+export const ScheduleItem = ({ time, title, description, icon, isLast }: ScheduleItemProps) => (
+  <>
+    <div className="flex flex-col items-center">
+      <div className="flex items-center justify-center size-10 min-h-10 rounded-full bg-primary/10 text-primary">
+        <span className="material-symbols-outlined text-[20px]">{icon}</span>
+      </div>
+      {!isLast && <div className="w-[2px] bg-[#e5e1dc] h-full min-h-[40px]"></div>}
+    </div>
+    <div className={`flex flex-col ${!isLast ? 'pb-8' : ''} pt-1`}>
+      <span className="text-primary font-bold text-sm uppercase tracking-wide font-display">{time}</span>
+      <h3 className="text-[#181511] text-lg font-bold font-thai">{title}</h3>
+      <p className="text-gray-500 text-sm mt-1 font-thai">{description}</p>
+    </div>
+  </>
+);
+
+const scheduleItems = [
+  {
+    time: EVENT_DETAILS.schedule.ceremony,
+    title: "นำนาคเข้าอุปสมบท",
+    description: "ณ พัทธสีมา วัดบางโฉลงใน",
+    icon: "self_improvement",
+  },
+  {
+    time: EVENT_DETAILS.schedule.lunch,
+    title: "ถวายภัตตาหารเพลแด่พระภิกษุสงฆ์",
+    description: "ร่วมถวายภัตตาหารและจตุปัจจัย",
+    icon: "rice_bowl",
+  },
+  {
+    time: EVENT_DETAILS.schedule.reception,
+    title: "เชิญแขกรับประทานอาหาร",
+    description: "ร่วมรับประทานอาหารโต๊ะจีน",
+    icon: "restaurant",
+  },
+];
+
+export const Schedule = () => {
   return (
-    <section className="py-16 px-6 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-center text-primary mb-12">กำหนดการ</h2>
+    <section id="schedule" className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 md:p-8 mb-8">
+      <div className="flex items-center gap-3 mb-8 border-b border-[#f0ebe6] pb-4">
+        <span className="material-symbols-outlined text-primary text-2xl">schedule</span>
+        <h2 className="text-[#181511] text-2xl font-bold font-thai">กำหนดการ</h2>
+      </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        {events.map((day, index) => (
-          <div key={index} className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
-            <div className="bg-primary/10 p-4 border-b border-primary/10 flex items-center justify-center gap-2">
-              <Calendar className="w-5 h-5 text-primary" />
-              <h3 className="text-xl font-semibold text-black dark:text-primary">{day.date}</h3>
-            </div>
-            <div className="p-6 space-y-6">
-              {day.items.map((item, i) => (
-                <div key={i} className="flex gap-4 items-start group">
-                  <div className="mt-1 bg-primary/10 text-primary p-2 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-primary mb-1">{item.time}</span>
-                    <h4 className="text-lg font-medium text-foreground">{item.activity}</h4>
-                    {item.description && <p className="text-muted-foreground text-sm">{item.description}</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="grid grid-cols-[48px_1fr] gap-x-4">
+        {scheduleItems.map((item, index) => (
+          <ScheduleItem
+            key={index}
+            time={item.time}
+            title={item.title}
+            description={item.description}
+            icon={item.icon}
+            isLast={index === scheduleItems.length - 1}
+          />
         ))}
       </div>
     </section>
   );
-}
+};
