@@ -111,7 +111,13 @@
   }
 
   body {
+    font-family: 'Newsreader', 'Noto Sans Thai', serif;
+
     @apply bg-background text-foreground;
+
+    .font-thai {
+      font-family: 'Noto Sans Thai', sans-serif;
+    }
   }
 }
 

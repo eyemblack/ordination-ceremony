@@ -6,11 +6,9 @@ const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
   display: "swap",
-  style: ["normal", "italic"],
 });
 
 const notoSansThai = Noto_Sans_Thai({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["thai", "latin"],
   variable: "--font-noto-sans-thai",
   display: "swap",
@@ -32,7 +30,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=optional" />
       </head>
       <body
-        className={`${newsreader.variable} ${notoSansThai.variable} antialiased font-sans`}
+        className={`${newsreader.variable} ${notoSansThai.variable} font-sans`}
       >
         {children}
       </body>

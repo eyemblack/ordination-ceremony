@@ -1,4 +1,4 @@
-import { MapPin, Navigation } from 'lucide-react';
+import { MapPin, Navigation, Pin } from 'lucide-react';
 
 export const Location = () => {
   return (
@@ -36,7 +36,8 @@ export const Location = () => {
           />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="bg-white/90 p-3 rounded-full shadow-lg">
-              <MapPin className='text-red-400' />
+              <Pin className='text-red-400' />
+
             </div>
           </div>
         </div>
