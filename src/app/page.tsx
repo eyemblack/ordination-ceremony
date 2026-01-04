@@ -11,7 +11,7 @@ export default function Home() {
       <main className="layout-container flex flex-col items-center w-full grow">
         <Hero />
 
-        <div className="flex flex-col w-full max-w-[700px] px-4 md:px-0 pb-4">
+        <div className="flex flex-col w-full max-w-[800px] px-4 md:px-0 pb-4">
           <Quote />
           <Schedule />
           <Location />

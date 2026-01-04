@@ -12,7 +12,7 @@ export const Footer = () => {
         className="flex items-center gap-2 px-6 py-3 rounded-lg border border-[#d6d1cb] bg-white hover:bg-gray-50 text-[#181511] font-medium transition-colors w-full md:w-auto justify-center shadow-sm"
       >
         <span className="material-symbols-outlined text-gray-600">event_available</span>
-        <span className="font-thai">บันทึกลงปฏิทิน (Add to Calendar)</span>
+        <span className="font-thai">บันทึกลงปฏิทิน</span>
       </button>
 
       <div className="text-center pt-8 border-t border-[#e5e1dc] w-full">
