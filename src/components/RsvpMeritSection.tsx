@@ -2,15 +2,17 @@
 import { EVENT_DETAILS } from '@/data/event';
 import { useState } from 'react';
 
-const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLScnybCZvLvyi0JwNFot4SQ6o28eGQVtQDZaMGcd0hccGlA13w/formResponse";
+import { GOOGLE_FORM_CONFIG } from '@/data/constants';
 
 export const RsvpForm = () => {
+
   const [formData, setFormData] = useState({
     name: '',
     guests: '1',
     attendance: 'yes'
   });
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -26,19 +28,14 @@ export const RsvpForm = () => {
 
   const handleConfirm = async () => {
     setShowConfirm(false);
-    alert(`ขอบคุณที่ตอบรับ: คุณ ${formData.name}`);
-    setFormData({
-      name: '',
-      guests: '1',
-      attendance: 'yes'
-    });
+
     const data = new URLSearchParams();
-    data.append('entry.1371482313', formData.name);
-    data.append('entry.214795494', formData.guests);
-    data.append('entry.929721816', formData.attendance);
+    data.append(GOOGLE_FORM_CONFIG.fields.name, formData.name);
+    data.append(GOOGLE_FORM_CONFIG.fields.guests, formData.guests);
+    data.append(GOOGLE_FORM_CONFIG.fields.attendance, formData.attendance);
 
     try {
-      await fetch(GOOGLE_FORM_ACTION_URL, {
+      await fetch(GOOGLE_FORM_CONFIG.actionUrl, {
         method: 'POST',
         mode: 'no-cors',
         body: data,
@@ -46,9 +43,11 @@ export const RsvpForm = () => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
+      console.log('Form submitted');
+      setIsSubmitted(true);
     } catch (error) {
-      alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
       console.error('Error submitting form:', error);
+      alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
     }
   };
 
@@ -60,68 +59,89 @@ export const RsvpForm = () => {
         <h2 className="text-[#181511] text-xl font-bold font-thai">ยืนยันการมาร่วมงาน</h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 grow">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-bold text-[#181511] font-thai">ชื่อ-นามสกุล</label>
-          <input
-            required
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-[#d6d1cb] px-4 py-2.5 text-[#181511] focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-[#fdfdfc] font-thai"
-            placeholder="ระบุชื่อของท่าน"
-            type="text"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้ติดตาม</label>
-          <select
-            name="guests"
-            value={formData.guests}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-[#d6d1cb] px-4 py-2.5 text-[#181511] focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-[#fdfdfc] font-thai"
+      {isSubmitted ? (
+        <div className="flex flex-col items-center justify-center grow py-8 text-center animate-in fade-in duration-500">
+          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4 text-green-600">
+            <span className="material-symbols-outlined text-4xl">check_circle</span>
+          </div>
+          <h3 className="text-xl font-bold text-[#181511] font-thai mb-2">บันทึกข้อมูลสำเร็จ</h3>
+          <p className="text-gray-600 font-thai mb-6">
+            ขอบคุณที่แจ้งความประสงค์
+          </p>
+          <button
+            onClick={() => {
+              setIsSubmitted(false);
+              setFormData({ name: '', guests: '1', attendance: 'yes' });
+            }}
+            className="text-primary hover:text-primary-dark font-bold font-thai text-sm underline underline-offset-4"
           >
-            <option value="1">1 ท่าน</option>
-            <option value="2">2 ท่าน</option>
-            <option value="3">3 ท่าน</option>
-            <option value="4">4 ท่าน</option>
-            <option value="5">5 ท่าน</option>
-          </select>
+            ส่งข้อมูลเพิ่มเติม
+          </button>
         </div>
-
-        <div className="flex flex-col gap-3 py-2">
-          <label className="flex items-center gap-3 cursor-pointer group">
+      ) : (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 grow">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-bold text-[#181511] font-thai">ชื่อ-นามสกุล</label>
             <input
-              type="radio"
-              name="attendance"
-              value="yes"
-              checked={formData.attendance === 'yes'}
+              required
+              name="name"
+              value={formData.name}
               onChange={handleChange}
-              className="w-5 h-5 text-primary border-gray-300 focus:ring-primary cursor-pointer accent-primary"
+              className="w-full rounded-lg border border-[#d6d1cb] px-4 py-2.5 text-[#181511] focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-[#fdfdfc] font-thai"
+              placeholder="ระบุชื่อของท่าน"
+              type="text"
             />
-            <span className="text-[#181511] group-hover:text-primary transition-colors font-thai">สามารถมาร่วมงานได้</span>
-          </label>
-          <label className="flex items-center gap-3 cursor-pointer group">
-            <input
-              type="radio"
-              name="attendance"
-              value="no"
-              checked={formData.attendance === 'no'}
-              onChange={handleChange}
-              className="w-5 h-5 text-gray-400 border-gray-300 focus:ring-gray-400 cursor-pointer accent-gray-500"
-            />
-            <span className="text-gray-500 group-hover:text-gray-700 transition-colors font-thai">ไม่สะดวกมาร่วมงาน</span>
-          </label>
-        </div>
+          </div>
 
-        <button
-          type="submit"
-          className="mt-auto w-full rounded-lg bg-primary hover:bg-primary-dark text-white font-bold h-11 transition-colors shadow-sm font-thai"
-        >
-          ยืนยัน
-        </button>
-      </form>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้ติดตาม</label>
+            <select
+              name="guests"
+              value={formData.guests}
+              onChange={handleChange}
+              className="w-full rounded-lg border border-[#d6d1cb] px-4 py-2.5 text-[#181511] focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-[#fdfdfc] font-thai"
+            >
+              <option value="1">1 ท่าน</option>
+              <option value="2">2 ท่าน</option>
+              <option value="3">3 ท่าน</option>
+              <option value="4">4 ท่าน</option>
+              <option value="5">5 ท่าน</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-3 py-2">
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input
+                type="radio"
+                name="attendance"
+                value="yes"
+                checked={formData.attendance === 'yes'}
+                onChange={handleChange}
+                className="w-5 h-5 text-primary border-gray-300 focus:ring-primary cursor-pointer accent-primary"
+              />
+              <span className="text-[#181511] group-hover:text-primary transition-colors font-thai">สามารถมาร่วมงานได้</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input
+                type="radio"
+                name="attendance"
+                value="no"
+                checked={formData.attendance === 'no'}
+                onChange={handleChange}
+                className="w-5 h-5 text-gray-400 border-gray-300 focus:ring-gray-400 cursor-pointer accent-gray-500"
+              />
+              <span className="text-gray-500 group-hover:text-gray-700 transition-colors font-thai">ไม่สะดวกมาร่วมงาน</span>
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className="mt-auto w-full rounded-lg bg-primary hover:bg-primary-dark text-white font-bold h-11 transition-colors shadow-sm font-thai"
+          >
+            ยืนยัน
+          </button>
+        </form>
+      )}
 
       {/* Confirmation Modal */}
       {showConfirm && (
