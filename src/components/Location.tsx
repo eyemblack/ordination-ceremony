@@ -18,7 +18,7 @@ export const Location = () => {
           className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold h-12 px-6 transition-colors shadow-sm"
         >
           <Navigation />
-          <span className="font-thai">นำทาง (Google Maps)</span>
+          <span className="font-thai text-sm md:text-xl">นำทาง (Google Maps)</span>
         </a>
       </div>
 
@@ -37,7 +37,6 @@ export const Location = () => {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="bg-white/90 p-3 rounded-full shadow-lg">
               <Pin className='text-red-400' />
-
             </div>
           </div>
         </div>
