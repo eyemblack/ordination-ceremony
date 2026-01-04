@@ -35,6 +35,8 @@ import {
 } from "@/components/ui/dialog"
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import SpaIcon from '@mui/icons-material/Spa';
+import HelpIcon from '@mui/icons-material/Help';
 
 const ATTENDANCE_OPTIONS = {
   YES: "yes",
@@ -67,7 +69,7 @@ const ConfirmationModal = ({ open, onOpenChange, data, onConfirm, isSubmitting }
       <DialogContent className="sm:max-w-sm rounded-xl font-thai">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
-            <span className="material-symbols-outlined text-primary text-2xl">help</span>
+            <HelpIcon className="material-symbols-outlined text-primary text-2xl" />
             <DialogTitle className="text-lg font-bold text-[#181511]">ยืนยันข้อมูล</DialogTitle>
           </div>
           <DialogDescription>
@@ -322,7 +324,7 @@ const MeritSection = () => {
     <section className="bg-[#fffcf7] rounded-xl shadow-sm border border-primary/30 p-6 flex flex-col h-full text-center relative overflow-hidden">
       {/* Decorative corner */}
       <div className="absolute top-0 right-0 p-2 opacity-10">
-        <span className="material-symbols-outlined text-6xl text-primary">spa</span>
+        <SpaIcon className="material-symbols-outlined text-6xl text-primary" />
       </div>
 
       <div className="flex flex-col items-center mb-6 relative z-10">
