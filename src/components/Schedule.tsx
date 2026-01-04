@@ -1,10 +1,14 @@
 import { EVENT_DETAILS } from "@/data/event";
+import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import RiceBowlIcon from '@mui/icons-material/RiceBowl';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
 interface ScheduleItemProps {
   time: string;
   title: string;
   description: string;
-  icon: string;
+  icon: React.ReactNode;
   isLast?: boolean;
 }
 
@@ -12,7 +16,7 @@ export const ScheduleItem = ({ time, title, description, icon, isLast }: Schedul
   <>
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-center size-10 min-h-10 rounded-full bg-primary/10 text-primary">
-        <span className="material-symbols-outlined text-[20px]">{icon}</span>
+        {icon}
       </div>
       {!isLast && <div className="w-[2px] bg-[#e5e1dc] h-full min-h-[40px]"></div>}
     </div>
@@ -29,19 +33,19 @@ const scheduleItems = [
     time: EVENT_DETAILS.schedule.ceremony,
     title: "นำนาคเข้าอุปสมบท",
     description: "ณ พัทธสีมา วัดบางโฉลงใน",
-    icon: "self_improvement",
+    icon: <SelfImprovementIcon className="material-symbols-outlined text-[20px]" />,
   },
   {
     time: EVENT_DETAILS.schedule.lunch,
     title: "ถวายภัตตาหารเพลแด่พระภิกษุสงฆ์",
     description: "ร่วมถวายภัตตาหารและจตุปัจจัย",
-    icon: "rice_bowl",
+    icon: <RiceBowlIcon className="material-symbols-outlined text-[20px]" />,
   },
   {
     time: EVENT_DETAILS.schedule.reception,
     title: "เชิญแขกรับประทานอาหาร",
     description: "ร่วมรับประทานอาหารโต๊ะจีน",
-    icon: "restaurant",
+    icon: <RestaurantIcon className="material-symbols-outlined text-[20px]" />,
   },
 ];
 
@@ -49,7 +53,7 @@ export const Schedule = () => {
   return (
     <section id="schedule" className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 md:p-8 mb-8">
       <div className="flex items-center gap-3 mb-8 border-b border-[#f0ebe6] pb-4">
-        <span className="material-symbols-outlined text-primary text-2xl">schedule</span>
+        <ScheduleIcon className="material-symbols-outlined text-primary text-2xl" />
         <h2 className="text-[#181511] text-2xl font-bold font-thai">กำหนดการ</h2>
       </div>
 

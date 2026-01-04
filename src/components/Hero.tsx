@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import { EVENT_DETAILS } from "@/data/event";
+import TempleBuddhistIcon from '@mui/icons-material/TempleBuddhist';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export const Hero = () => {
   const scrollToSchedule = () => {
@@ -29,7 +31,7 @@ export const Hero = () => {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center text-center p-6 gap-6 max-w-2xl">
           <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-3 rounded-full mb-2 animate-fade-in-up">
-            <span className="material-symbols-outlined text-white text-4xl">temple_buddhist</span>
+            <TempleBuddhistIcon className="text-white text-4xl" />
           </div>
 
           <div className="flex flex-col gap-2 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
@@ -60,7 +62,7 @@ export const Hero = () => {
             className="mt-4 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-[#211911] text-base font-bold px-8 py-3 rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer"
             style={{ animationDelay: '600ms' }}
           >
-            <span className="material-symbols-outlined">calendar_month</span>
+            <CalendarMonthIcon className="material-symbols-outlined" />
             <span className="font-thai">อ่านกำหนดการ</span>
           </button>
         </div>
