@@ -1,18 +1,23 @@
-import Hero from "@/components/Hero";
-import Invitation from "@/components/Invitation";
-import Schedule from "@/components/Schedule";
-import Location from "@/components/Location";
+import { Hero } from "@/components/Hero";
+import { InvitationQuote } from "@/components/InvitationQuote";
+import { Timeline } from "@/components/Timeline";
+import { Location } from "@/components/Location";
+import { RSVP } from "@/components/RSVP";
+import { Donation } from "@/components/Donation";
 
 export default function Home() {
   return (
-    <main className="min-h-screen pb-20 selection:bg-primary/20">
+    <main className="min-h-screen bg-background overflow-x-hidden selection:bg-primary/20 selection:text-foreground">
       <Hero />
-      <Invitation />
-      <Schedule />
+      <InvitationQuote />
+      <Timeline />
       <Location />
+      <RSVP />
+      <Donation />
 
-      <footer className="text-center text-muted-foreground text-sm py-8 mt-12 border-t border-border/50">
-        <p>© 2569 งานบวชนาคแบล็ค | วัดบางโฉลงใน</p>
+      {/* Footer */}
+      <footer className="py-8 text-center text-sm text-muted-foreground border-t border-border/40">
+        <p>© 2026 Natwut Suntornroj Ordination Ceremony</p>
       </footer>
     </main>
   );
