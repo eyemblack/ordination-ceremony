@@ -18,7 +18,7 @@ export const Hero = () => {
             backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmRUSjpyQVLB2ypFZNaWcq5uZCvN_fkoWe-houbCQUL6niWGsmvYZfQf39-KF3Y8KqeXFI2i5lzQRjU38eQnV8DhzMaEcvQJXz_zFmfxktS49oi9o8KWbdNAtGclbKlKjNqAnqDVsLTLrMZd57cRtdmL7K_C8kIaXXU1m1wXPSVtgQLrJoCVV8Brgem2iULLHiKqtJ7eF2ZSBuVyELPfDdyDb4wkLSgyZ_zUlyIyVHg14XPLnqKpNWwbDmiSxElEKi7mDLwnrR3zrm")`
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/70"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/40 to-black/70"></div>
 
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center text-center p-6 gap-6 max-w-2xl">
