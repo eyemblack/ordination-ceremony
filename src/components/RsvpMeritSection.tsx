@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { CheckCircle2 } from "lucide-react"
+import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
 
 import { EVENT_DETAILS } from '@/data/event';
 import { GOOGLE_FORM_CONFIG } from '@/data/constants';
@@ -34,35 +34,118 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
+const ATTENDANCE_OPTIONS = {
+  YES: "yes",
+  NO: "no",
+} as const;
+
 const formSchema = z.object({
   name: z.string().min(1, {
-    message: "กรุณาระบุชื่อ-นามสกุล",
+    message: "กรุณาระบุชื่อ",
   }),
   guests: z.string(),
-  attendance: z.enum(["yes", "no"], {
+  attendance: z.enum([ATTENDANCE_OPTIONS.YES, ATTENDANCE_OPTIONS.NO], {
     message: "กรุณาระบุความประสงค์",
   }),
 })
 
+type FormValues = z.infer<typeof formSchema>;
+
+interface ConfirmationModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  data: FormValues;
+  onConfirm: () => void;
+  isSubmitting: boolean;
+}
+
+const ConfirmationModal = ({ open, onOpenChange, data, onConfirm, isSubmitting }: ConfirmationModalProps) => {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-sm rounded-xl font-thai">
+        <DialogHeader>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="material-symbols-outlined text-primary text-2xl">help</span>
+            <DialogTitle className="text-lg font-bold text-[#181511]">ยืนยันข้อมูล</DialogTitle>
+          </div>
+          <DialogDescription>
+            โปรดตรวจสอบข้อมูลของท่านก่อนยืนยัน
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="bg-[#f8f7f6] p-4 rounded-lg border border-[#e5e1dc] space-y-2 text-sm">
+          <div className="flex justify-between items-start gap-2">
+            <span className="text-gray-500 shrink-0">ชื่อ:</span>
+            <span className="font-bold text-[#181511] text-right">{data.name}</span>
+          </div>
+          <div className="flex justify-between items-start gap-2">
+            <span className="text-gray-500 shrink-0">จำนวน:</span>
+            <span className="font-bold text-[#181511] text-right">
+              {data.guests === '1' ? 'มาคนเดียว' : `${data.guests} ท่าน`}
+            </span>
+          </div>
+          <div className="flex justify-between items-start gap-2">
+            <span className="text-gray-500 shrink-0">สถานะ:</span>
+            <span className={`font-bold text-right ${data.attendance === ATTENDANCE_OPTIONS.YES ? 'text-green-600' : 'text-red-500'}`}>
+              {data.attendance === ATTENDANCE_OPTIONS.YES ? 'มาร่วมงานได้' : 'ไม่สะดวก'}
+            </span>
+          </div>
+        </div>
+
+        <DialogFooter className="flex gap-2 sm:justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            className="font-bold text-gray-700 font-thai"
+            disabled={isSubmitting}
+          >
+            ยกเลิก
+          </Button>
+          <Button
+            type="button"
+            onClick={onConfirm}
+            className="bg-primary hover:bg-primary-dark text-white font-bold font-thai"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                กำลังบันทึก...
+              </>
+            ) : (
+              'ยืนยัน'
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export const RsvpForm = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       guests: "1",
-      attendance: "yes",
+      attendance: ATTENDANCE_OPTIONS.YES,
     },
   })
 
   function onSubmit() {
+    setSubmitError(null);
     setShowConfirm(true);
   }
 
   const handleConfirm = async () => {
-    setShowConfirm(false);
+    setIsSubmitting(true);
+    setSubmitError(null);
     const values = form.getValues();
 
     const data = new URLSearchParams();
@@ -80,14 +163,16 @@ export const RsvpForm = () => {
         },
       });
       console.log('Form submitted');
+      setShowConfirm(false);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
+      setSubmitError("เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง");
+      setShowConfirm(false);
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  const { watch } = form;
 
   return (
     <section className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 flex flex-col h-full relative">
@@ -119,12 +204,24 @@ export const RsvpForm = () => {
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 grow">
+            {submitError && (
+              <div className="rounded-lg border border-red-200 bg-red-50 p-4 mb-4 flex gap-3 text-red-900">
+                <AlertCircle className="h-5 w-5 shrink-0 text-red-600" />
+                <div className="space-y-1">
+                  <h5 className="font-bold text-sm leading-none">ข้อผิดพลาด</h5>
+                  <div className="text-sm opacity-90">
+                    {submitError}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-bold text-[#181511] font-thai">ชื่อ-นามสกุล</FormLabel>
+                  <FormLabel className="text-sm font-bold text-[#181511] font-thai">ชื่อ</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="ระบุชื่อของท่าน"
@@ -175,7 +272,7 @@ export const RsvpForm = () => {
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0 cursor-pointer group">
                         <FormControl>
-                          <RadioGroupItem value="yes" className="text-primary border-gray-300 focus:ring-primary" />
+                          <RadioGroupItem value={ATTENDANCE_OPTIONS.YES} className="text-primary border-gray-300 focus:ring-primary" />
                         </FormControl>
                         <FormLabel className="font-normal text-[#181511] group-hover:text-primary transition-colors font-thai cursor-pointer">
                           สามารถมาร่วมงานได้
@@ -183,7 +280,7 @@ export const RsvpForm = () => {
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0 cursor-pointer group">
                         <FormControl>
-                          <RadioGroupItem value="no" className="text-gray-400 border-gray-300 focus:ring-gray-400" />
+                          <RadioGroupItem value={ATTENDANCE_OPTIONS.NO} className="text-gray-400 border-gray-300 focus:ring-gray-400" />
                         </FormControl>
                         <FormLabel className="font-normal text-gray-500 group-hover:text-gray-700 transition-colors font-thai cursor-pointer">
                           ไม่สะดวกมาร่วมงาน
@@ -207,56 +304,13 @@ export const RsvpForm = () => {
       )}
 
       {/* Confirmation Modal */}
-      <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
-        <DialogContent className="sm:max-w-sm rounded-xl font-thai">
-          <DialogHeader>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-primary text-2xl">help</span>
-              <DialogTitle className="text-lg font-bold text-[#181511]">ยืนยันข้อมูล</DialogTitle>
-            </div>
-            <DialogDescription>
-              โปรดตรวจสอบข้อมูลของท่านก่อนยืนยัน
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="bg-[#f8f7f6] p-4 rounded-lg border border-[#e5e1dc] space-y-2 text-sm">
-            <div className="flex justify-between items-start gap-2">
-              <span className="text-gray-500 shrink-0">ชื่อ-นามสกุล:</span>
-              <span className="font-bold text-[#181511] text-right">{watch('name')}</span>
-            </div>
-            <div className="flex justify-between items-start gap-2">
-              <span className="text-gray-500 shrink-0">จำนวน:</span>
-              <span className="font-bold text-[#181511] text-right">
-                {watch('guests') === '1' ? 'มาคนเดียว' : `${watch('guests')} ท่าน`}
-              </span>
-            </div>
-            <div className="flex justify-between items-start gap-2">
-              <span className="text-gray-500 shrink-0">สถานะ:</span>
-              <span className={`font-bold text-right ${watch('attendance') === 'yes' ? 'text-green-600' : 'text-red-500'}`}>
-                {watch('attendance') === 'yes' ? 'มาร่วมงานได้' : 'ไม่สะดวก'}
-              </span>
-            </div>
-          </div>
-
-          <DialogFooter className="flex gap-2 sm:justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setShowConfirm(false)}
-              className="font-bold text-gray-700 font-thai"
-            >
-              ยกเลิก
-            </Button>
-            <Button
-              type="button"
-              onClick={handleConfirm}
-              className="bg-primary hover:bg-primary-dark text-white font-bold font-thai"
-            >
-              ยืนยัน
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ConfirmationModal
+        open={showConfirm}
+        onOpenChange={setShowConfirm}
+        data={form.getValues()}
+        onConfirm={handleConfirm}
+        isSubmitting={isSubmitting}
+      />
     </section>
   );
 };
