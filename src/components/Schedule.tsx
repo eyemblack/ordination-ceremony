@@ -34,7 +34,7 @@ const scheduleData = [
     date: '16 มกราคม 2569',
     items: [
       {
-        time: '15:00 - 17:00 น.',
+        time: '13:00 น.',
         title: 'พิธีปลงผมนาค',
         description: 'ณ พัทธสีมา วัดบางโฉลงใน',
         icon: <FaceIcon className="material-symbols-outlined text-[20px]" />,
