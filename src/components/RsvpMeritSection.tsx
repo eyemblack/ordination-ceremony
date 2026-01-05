@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
+import Image from "next/image"
 
 import { EVENT_DETAILS } from '@/data/event';
 import { GOOGLE_FORM_CONFIG } from '@/data/constants';
@@ -34,7 +35,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import SpaIcon from '@mui/icons-material/Spa';
 import HelpIcon from '@mui/icons-material/Help';
 
@@ -334,17 +334,13 @@ const MeritSection = () => {
 
       <div className="flex flex-col items-center justify-center grow gap-4 relative z-10">
         <div className="p-3 bg-white rounded-xl shadow-sm border border-primary/20">
-          {/* QR Placeholder using CSS pattern */}
-          <div
-            className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center"
-            style={{
-              backgroundImage: 'linear-gradient(135deg, #eeeeee 25%, transparent 25%), linear-gradient(225deg, #eeeeee 25%, transparent 25%), linear-gradient(45deg, #eeeeee 25%, transparent 25%), linear-gradient(315deg, #eeeeee 25%, transparent 25%)',
-              backgroundPosition: '10px 0, 10px 0, 0 0, 0 0',
-              backgroundSize: '20px 20px',
-              backgroundRepeat: 'repeat'
-            }}
-          >
-            <QrCodeScannerIcon className="material-symbols-outlined text-gray-400 text-4xl" />
+          <div className="w-32 h-32 relative bg-white rounded-lg overflow-hidden">
+            <Image
+              src="/images/qr-code.jpg"
+              alt="Payment QR Code"
+              fill
+              className="object-contain"
+            />
           </div>
         </div>
 
