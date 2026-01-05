@@ -77,7 +77,7 @@ export const Schedule = () => {
       <div className="flex flex-col gap-8">
         {scheduleData.map((day, dayIndex) => (
           <div key={dayIndex}>
-            <div className="bg-primary/5 text-primary-dark px-6 py-2 rounded-full text-sm font-semibold border border-primary/20 backdrop-blur-sm z-10 shadow-sm max-w-[210px] mb-6 justify-self-center">
+            <div className="bg-primary/5 text-primary-dark px-6 py-2 rounded-full text-sm font-semibold border border-primary/20 backdrop-blur-sm z-10 shadow-sm max-w-[210px] mb-6 justify-self-center font-thai">
               {day.date}
             </div>
 
