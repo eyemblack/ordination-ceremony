@@ -8,12 +8,19 @@ export const Hero = () => {
   const scrollToSchedule = () => {
     const el = document.getElementById('schedule');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      const headerOffset = 100;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
   return (
-    <div className="w-full max-w-[960px] p-0 md:p-8">
+    <div id="hero-section" className="w-full max-w-[960px] p-0 md:p-8">
       <div className="relative flex flex-col items-center justify-center min-h-[500px] w-full overflow-hidden rounded-none md:rounded-xl shadow-lg group">
         {/* Background Image */}
         <div className="absolute inset-0">

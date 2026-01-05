@@ -85,7 +85,11 @@ const ConfirmationModal = ({ open, onOpenChange, data, onConfirm, isSubmitting }
           <div className="flex justify-between items-start gap-2">
             <span className="text-gray-500 shrink-0">จำนวน:</span>
             <span className="font-bold text-[#181511] text-right">
-              {data.guests === '1' ? 'มาคนเดียว' : `${data.guests} ท่าน`}
+              {
+                data.attendance === ATTENDANCE_OPTIONS.NO ?
+                  '0' :
+                  `${data.guests} ท่าน`
+              }
             </span>
           </div>
           <div className="flex justify-between items-start gap-2">
@@ -154,7 +158,7 @@ export const RsvpForm = () => {
 
     const data = new URLSearchParams();
     data.append(GOOGLE_FORM_CONFIG.fields.name, values.name);
-    data.append(GOOGLE_FORM_CONFIG.fields.guests, values.guests);
+    data.append(GOOGLE_FORM_CONFIG.fields.guests, values.attendance === ATTENDANCE_OPTIONS.YES ? values.guests : '0');
     data.append(GOOGLE_FORM_CONFIG.fields.attendance, values.attendance);
 
     try {
@@ -243,7 +247,7 @@ export const RsvpForm = () => {
               name="guests"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้ติดตาม</FormLabel>
+                  <FormLabel className="text-sm font-bold text-[#181511] font-thai">จำนวนผู้มางาน(รวมตัวเอง)</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="bg-[#fdfdfc] font-thai">
