@@ -233,7 +233,7 @@ export const RsvpForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="font-thai" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -258,7 +258,7 @@ export const RsvpForm = () => {
                       <SelectItem value="5">5 ท่าน</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage className="font-thai" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -292,7 +292,7 @@ export const RsvpForm = () => {
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
-                  <FormMessage className="font-thai" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
