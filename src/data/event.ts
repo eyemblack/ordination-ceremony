@@ -14,7 +14,7 @@ export const EVENT_DETAILS = {
   },
   bankAccount: {
     bankName: "ธนาคารกสิกรไทย",
-    accountNumber: "123-4-56789-0",
+    accountNumber: "XXX-X-X4216-X",
     accountName: "นายณัฐวุฒิ สุนทรโรจน์",
   }
 };
