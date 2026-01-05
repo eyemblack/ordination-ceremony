@@ -45,7 +45,7 @@ const ATTENDANCE_OPTIONS = {
 
 const formSchema = z.object({
   name: z.string().min(1, {
-    message: "กรุณาระบุชื่อ",
+    message: "กรุณาระบุชื่อของท่าน",
   }),
   guests: z.string(),
   attendance: z.enum([ATTENDANCE_OPTIONS.YES, ATTENDANCE_OPTIONS.NO], {
@@ -182,7 +182,7 @@ export const RsvpForm = () => {
     <section className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] p-6 flex flex-col h-full relative">
       <div className="flex items-center gap-2 mb-6 border-b border-[#f0ebe6] pb-3">
         <MarkEmailReadIcon className="material-symbols-outlined text-primary" />
-        <h2 className="text-[#181511] text-xl font-bold font-thai">ยืนยันการมาร่วมงาน</h2>
+        <h2 className="text-[#181511] text-xl font-bold font-thai">ลงชื่อร่วมงานบุญ</h2>
       </div>
 
       {isSubmitted ? (
@@ -233,7 +233,7 @@ export const RsvpForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="font-thai" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -258,7 +258,7 @@ export const RsvpForm = () => {
                       <SelectItem value="5">5 ท่าน</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage className="font-thai" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -279,7 +279,7 @@ export const RsvpForm = () => {
                           <RadioGroupItem value={ATTENDANCE_OPTIONS.YES} className="text-primary border-gray-300 focus:ring-primary" />
                         </FormControl>
                         <FormLabel className="font-normal text-[#181511] group-hover:text-primary transition-colors font-thai cursor-pointer">
-                          สามารถมาร่วมงานได้
+                          ยินดีมาร่วมอนุโมทนาบุญ
                         </FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0 cursor-pointer group">
@@ -287,12 +287,12 @@ export const RsvpForm = () => {
                           <RadioGroupItem value={ATTENDANCE_OPTIONS.NO} className="text-gray-400 border-gray-300 focus:ring-gray-400" />
                         </FormControl>
                         <FormLabel className="font-normal text-gray-500 group-hover:text-gray-700 transition-colors font-thai cursor-pointer">
-                          ไม่สะดวกมาร่วมงาน
+                          ขอร่วมอนุโมทนาบุญจากทางไกล
                         </FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
-                  <FormMessage className="font-thai" />
+                  <FormMessage />
                 </FormItem>
               )}
             />

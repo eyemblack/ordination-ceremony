@@ -3,6 +3,7 @@ import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import RiceBowlIcon from '@mui/icons-material/RiceBowl';
 import ScheduleIcon from '@mui/icons-material/Schedule';
+import FaceIcon from '@mui/icons-material/Face';
 
 interface ScheduleItemProps {
   time: string;
@@ -12,7 +13,7 @@ interface ScheduleItemProps {
   isLast?: boolean;
 }
 
-export const ScheduleItem = ({ time, title, description, icon, isLast }: ScheduleItemProps) => (
+const ScheduleItem = ({ time, title, description, icon, isLast }: ScheduleItemProps) => (
   <>
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-center size-10 min-h-10 rounded-full bg-primary/10 text-primary">
@@ -28,25 +29,41 @@ export const ScheduleItem = ({ time, title, description, icon, isLast }: Schedul
   </>
 );
 
-const scheduleItems = [
+const scheduleData = [
   {
-    time: EVENT_DETAILS.schedule.ceremony,
-    title: "นำนาคเข้าอุปสมบท",
-    description: "ณ พัทธสีมา วัดบางโฉลงใน",
-    icon: <SelfImprovementIcon className="material-symbols-outlined text-[20px]" />,
+    date: '16 มกราคม 2569',
+    items: [
+      {
+        time: '15:00 - 17:00 น.',
+        title: 'พิธีปลงผมนาค',
+        description: 'ณ พัทธสีมา วัดบางโฉลงใน',
+        icon: <FaceIcon className="material-symbols-outlined text-[20px]" />,
+      }
+    ]
   },
   {
-    time: EVENT_DETAILS.schedule.lunch,
-    title: "ถวายภัตตาหารเพลแด่พระภิกษุสงฆ์",
-    description: "ร่วมถวายภัตตาหารและจตุปัจจัย",
-    icon: <RiceBowlIcon className="material-symbols-outlined text-[20px]" />,
-  },
-  {
-    time: EVENT_DETAILS.schedule.reception,
-    title: "เชิญแขกรับประทานอาหาร",
-    description: "ร่วมรับประทานอาหารโต๊ะจีน",
-    icon: <RestaurantIcon className="material-symbols-outlined text-[20px]" />,
-  },
+    date: '17 มกราคม 2569',
+    items: [
+      {
+        time: EVENT_DETAILS.schedule.ceremony,
+        title: "นำนาคเข้าอุปสมบท",
+        description: "ณ พัทธสีมา วัดบางโฉลงใน",
+        icon: <SelfImprovementIcon className="material-symbols-outlined text-[20px]" />,
+      },
+      {
+        time: EVENT_DETAILS.schedule.lunch,
+        title: "ถวายภัตตาหารเพลแด่พระภิกษุสงฆ์",
+        description: "ร่วมถวายภัตตาหารและจตุปัจจัย",
+        icon: <RiceBowlIcon className="material-symbols-outlined text-[20px]" />,
+      },
+      {
+        time: EVENT_DETAILS.schedule.reception,
+        title: "เชิญแขกรับประทานอาหาร",
+        description: "ร่วมรับประทานอาหารโต๊ะจีน",
+        icon: <RestaurantIcon className="material-symbols-outlined text-[20px]" />,
+      },
+    ]
+  }
 ];
 
 export const Schedule = () => {
@@ -57,16 +74,26 @@ export const Schedule = () => {
         <h2 className="text-[#181511] text-2xl font-bold font-thai">กำหนดการ</h2>
       </div>
 
-      <div className="grid grid-cols-[48px_1fr] gap-x-4">
-        {scheduleItems.map((item, index) => (
-          <ScheduleItem
-            key={index}
-            time={item.time}
-            title={item.title}
-            description={item.description}
-            icon={item.icon}
-            isLast={index === scheduleItems.length - 1}
-          />
+      <div className="flex flex-col gap-8">
+        {scheduleData.map((day, dayIndex) => (
+          <div key={dayIndex}>
+            <div className="bg-primary/5 text-primary-dark px-6 py-2 rounded-full text-sm font-semibold border border-primary/20 backdrop-blur-sm z-10 shadow-sm max-w-[210px] mb-6 justify-self-center">
+              {day.date}
+            </div>
+
+            <div className="grid grid-cols-[48px_1fr] gap-x-4">
+              {day.items.map((item, index) => (
+                <ScheduleItem
+                  key={index}
+                  time={item.time}
+                  title={item.title}
+                  description={item.description}
+                  icon={item.icon}
+                  isLast={index === day.items.length - 1}
+                />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </section>
