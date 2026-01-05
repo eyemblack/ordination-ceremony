@@ -4,7 +4,7 @@ export const Location = () => {
   return (
     <section className="bg-white rounded-xl shadow-sm border border-[#e5e1dc] overflow-hidden mb-8">
       <div className="p-6 md:p-8">
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-3 mb-4 border-b border-[#f0ebe6] pb-4">
           <MapPin className='text-primary' />
           <h2 className="text-[#181511] text-2xl font-bold font-thai">สถานที่จัดงาน</h2>
         </div>
